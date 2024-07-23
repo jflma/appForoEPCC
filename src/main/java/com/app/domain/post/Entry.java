@@ -1,6 +1,8 @@
-package com.proyect_v1.mvp.domain.entities;
+package com.app.domain.post;
 
 import java.time.LocalDateTime;
+
+import com.app.domain.user.ForoUser;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +23,7 @@ public class Entry {
   
   @ManyToOne
   @JoinColumn(name = "id_user",referencedColumnName = "id",foreignKey = @ForeignKey(name = "FK_user_entry"),nullable = false)
-  private User user;
+  private ForoUser user;
 
   @Column(nullable = false,columnDefinition = "TEXT")
   private String content;
@@ -45,7 +47,7 @@ public class Entry {
     return id;
   }
 
-  public User getUser() {
+  public ForoUser getUser() {
     return user;
   }
 
@@ -93,7 +95,7 @@ public class Entry {
     this.last_update = last_update;
   }
 
-  public void setUser(User user) {
+  public void setUser(ForoUser user) {
     this.user = user;
   }
   

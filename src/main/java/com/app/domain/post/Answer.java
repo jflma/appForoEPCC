@@ -1,4 +1,4 @@
-package com.proyect_v1.mvp.domain.entities;
+package com.app.domain.post;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

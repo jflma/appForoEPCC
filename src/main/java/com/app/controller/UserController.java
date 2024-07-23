@@ -1,4 +1,4 @@
-package com.app.controllers;
+package com.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.domain.entities.Person;
-import com.app.domain.entities.User;
-import com.app.services.implementations.UserServiceImp;
+import com.app.domain.user.Person;
+import com.app.domain.user.ForoUser;
+import com.app.services.implementations.user.UserServiceImp;
 
 @RestController
 @RequestMapping("/api/user")
@@ -22,9 +22,9 @@ public class UserController {
 
   @CrossOrigin
   @PostMapping("/create")
-  public ResponseEntity<User> createUser(@RequestBody Person person) {
+  public ResponseEntity<ForoUser> createUser(@RequestBody Person person) {
     try{
-      User newUser = userService.registerUser(person);
+      ForoUser newUser = userService.registerUser(person);
       return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     } catch (Exception e){
       throw new RuntimeException("No se pudo registrar el usuario");

@@ -1,4 +1,6 @@
-package com.app.domain.entities;
+package com.app.domain.post;
+
+import com.app.domain.user.ForoUser;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +22,7 @@ public class Comment {
 
   @ManyToOne
   @JoinColumn(name = "id_user", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_user_comment"), nullable = false)
-  private User user;
+  private ForoUser user;
 
   @ManyToOne
   @JoinColumn(name = "id_entry_commented", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_entry_comment"), nullable = false)
@@ -34,7 +36,7 @@ public class Comment {
     return id;
   }
 
-  public User getUser() {
+  public ForoUser getUser() {
     return user;
   }
 
@@ -47,7 +49,7 @@ public class Comment {
   }
 
   // Setters
-  public void setUser(User user) {
+  public void setUser(ForoUser user) {
     this.user = user;
   }
 
