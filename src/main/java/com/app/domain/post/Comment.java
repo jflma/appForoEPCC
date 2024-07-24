@@ -26,10 +26,12 @@ import lombok.Setter;
 @Table(name = "comment")
 public class Comment {
 
+  // Identificador único del comentario.
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  // Usuario que hizo el comentario.
   @ManyToOne
   @JoinColumn(name = "id_user", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_user_comment"), nullable = false)
   private ForoUser user;
@@ -40,5 +42,7 @@ public class Comment {
 
   @Column(nullable = false)
   private String content;
+
+ // private boolean deleted;
 
 }
