@@ -21,7 +21,12 @@ public class Post {
   private Long Id;
 
   @OneToOne(cascade = CascadeType.REMOVE)
-  @JoinColumn(name = "id_entry",referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_entry_post"),nullable = false)
+  @JoinColumn(
+    name = "id_entry",
+    referencedColumnName = "id",
+    foreignKey = @ForeignKey(name = "FK_entry_post"),
+    nullable = false
+  )
   private Entry entry;
 
   @Column(nullable = false)
