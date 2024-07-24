@@ -102,4 +102,9 @@
 		</plugins>
 	</build>
 
+	<dependency>
+    <groupId>com.amazonaws.secretsmanager</groupId>
+    <artifactId>aws-secretsmanager-caching-java</artifactId>
+    <version>1.0.0</version>
+	</dependency>
 </project>
