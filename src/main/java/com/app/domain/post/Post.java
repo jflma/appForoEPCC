@@ -18,7 +18,7 @@ public class Post {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   // El identificador de la publicación
-  private Long Id;
+  private Long id;
 
   @OneToOne(cascade = CascadeType.REMOVE)
   @JoinColumn(
@@ -55,7 +55,7 @@ public class Post {
   }
 
   public Long getId() {
-    return Id;
+    return id;
   }
 
   public Entry getEntry() {
