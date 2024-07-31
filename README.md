@@ -318,9 +318,9 @@ public Answer createAnswer(Long postIdToReply, String content){
   - Guardar la respuesta en el repositorio.
 - Cada paso depende de la salida del paso anterior, formando un pipeline claro y estructurado.
 
-### RESTful
+### Things
 
-El estilo RESTful se basa en principios de REST (Representational State Transfer), donde los servicios se diseñan para ser sencillos, escalables y sin estado. Los métodos del servicio realizan operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre los recursos.
+El estilo "Things" se refiere a la creación y manipulación de objetos o entidades del dominio. Este estilo se centra en la gestión y las interacciones de las entidades que representan conceptos del dominio del problema.
 
 **Fragmento de Código**  
 Archivo: AnswerService.java
@@ -365,7 +365,6 @@ public class AnswerService implements IAnswerService {
 ```
 
 **Análisis:**  
-- La clase `AnswerService` proporciona métodos que representan operaciones RESTful:
-  - createAnswer (POST): Crea una nueva respuesta.
-  - getAnswerById (GET): Recupera una respuesta por su ID.
-- Cada método realiza una operación específica sobre el recurso `Answer`, siguiendo los principios REST.
+- La clase AnswerService maneja las entidades del dominio ForoUser, Entry, Post, y Answer.
+- Los métodos createAnswer y getAnswerById se centran en la creación y recuperación de instancias de Answer, interactuando con otras entidades del dominio.
+- Este enfoque facilita la manipulación de objetos del dominio y sus interacciones, encapsulando la lógica de negocio relacionada con estas entidades.
