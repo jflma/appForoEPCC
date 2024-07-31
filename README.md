@@ -254,3 +254,118 @@ public interface IAnswerService {
 
 **Análisis:**  
 La interfaz IAnswerService está segregada en dos métodos específicos (createAnswer y getAnswerById). Esto asegura que las implementaciones de IAnswerService solo necesiten implementar los métodos que realmente usan, evitando interfaces grandes y monolíticas.
+
+## Estilos de Programación Aplicados
+
+### Error/Exception Handling
+El manejo de errores y excepciones es un enfoque que se utiliza para gestionar situaciones inesperadas y errores en el flujo de ejecución del programa. Este estilo ayuda a mantener el código limpio y a proporcionar mensajes de error claros.
+
+**Fragmento de Código**  
+Archivo: AnswerService.java
+
+```
+@Override
+@Transactional
+public Answer createAnswer(Long postIdToReply, String content){
+  try {
+    String userByUsername = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+    ForoUser user = userService.getUserByUsername(userByUsername);
+    Entry entryCreated = entryService.createEntry(user, content);
+    Post postToReply = postService.getPostById(postIdToReply);
+
+    Answer answerCreated = new Answer();
+    answerCreated.setEntry(entryCreated);
+    answerCreated.setPost(postToReply);
+    return answerRepository.save(answerCreated);
+  } catch (Exception e) {
+    throw new CreationException("No se pudo crear la respuesta");
+  }
+}
+```
+
+**Análisis:**  
+- El bloque `try-catch` maneja cualquier excepción que pueda ocurrir durante el proceso de creación de una respuesta.
+- La excepción se encapsula en una `CreationException` con un mensaje claro, lo que facilita la depuración y el manejo de errores en niveles superiores del código.
+
+### Pipeline
+El estilo de programación Pipeline consiste en encadenar una serie de operaciones donde la salida de una operación se convierte en la entrada de la siguiente. Este estilo promueve un flujo de datos claro y una transformación paso a paso.
+
+**Fragmento de Código**  
+Archivo: AnswerService.java
+
+```
+@Override
+@Transactional
+public Answer createAnswer(Long postIdToReply, String content){
+  String userByUsername = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+  ForoUser user = userService.getUserByUsername(userByUsername);
+  Entry entryCreated = entryService.createEntry(user, content);
+  Post postToReply = postService.getPostById(postIdToReply);
+
+  Answer answerCreated = new Answer();
+  answerCreated.setEntry(entryCreated);
+  answerCreated.setPost(postToReply);
+  return answerRepository.save(answerCreated);
+}
+```
+
+**Análisis:**  
+- El método `createAnswer` sigue un flujo de operaciones secuenciales:
+  -  Obtener el usuario autenticado.
+  - Crear una entrada (Entry) para el usuario.
+  - Obtener la publicación (Post) a la que se responde.
+  - Crear una respuesta (Answer) con la entrada y la publicación.
+  - Guardar la respuesta en el repositorio.
+- Cada paso depende de la salida del paso anterior, formando un pipeline claro y estructurado.
+
+### RESTful
+
+El estilo RESTful se basa en principios de REST (Representational State Transfer), donde los servicios se diseñan para ser sencillos, escalables y sin estado. Los métodos del servicio realizan operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre los recursos.
+
+**Fragmento de Código**  
+Archivo: AnswerService.java
+
+```
+@Service
+public class AnswerService implements IAnswerService {
+
+  private UserService userService;
+  private PostService postService;
+  private EntryService entryService;
+  private AnswerRepositoryImp answerRepository;
+
+  public AnswerService(UserService userService, PostService postService, EntryService entryService, AnswerRepositoryImp answerRepository) {
+    this.userService = userService;
+    this.postService = postService;
+    this.entryService = entryService;
+    this.answerRepository = answerRepository;
+  }
+
+  @Override
+  @Transactional
+  public Answer createAnswer(Long postIdToReply, String content){
+    String userByUsername = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+    ForoUser user = userService.getUserByUsername(userByUsername);
+    Entry entryCreated = entryService.createEntry(user, content);
+    Post postToReply = postService.getPostById(postIdToReply);
+
+    Answer answerCreated = new Answer();
+    answerCreated.setEntry(entryCreated);
+    answerCreated.setPost(postToReply);
+    return answerRepository.save(answerCreated);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Answer getAnswerById(Long idAnswer){
+    return answerRepository.findById(idAnswer)
+      .orElseThrow();
+  }
+}
+```
+
+**Análisis:**  
+- La clase `AnswerService` proporciona métodos que representan operaciones RESTful:
+  - createAnswer (POST): Crea una nueva respuesta.
+  - getAnswerById (GET): Recupera una respuesta por su ID.
+- Cada método realiza una operación específica sobre el recurso `Answer`, siguiendo los principios REST.
