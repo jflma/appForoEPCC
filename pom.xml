@@ -27,7 +27,14 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>22</java.version>
+		<java.version>17</java.version>
+		<maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <sonar.projectKey>ForoTest1</sonar.projectKey>
+        <sonar.projectName>ForoTest1</sonar.projectName>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+				<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.exclusions>src/**/domain/*, src/**/ProyectoForoApplication.java, src/**/config/*, src/**/exceptions/*, **/controller/dto/*</sonar.coverage.exclusions>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -56,7 +63,25 @@
 				<artifactId>java-jwt</artifactId>
 				<version>4.4.0</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- lucene and hibernate search -->
+		<!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm -->
+		<dependency>
+				<groupId>org.hibernate.search</groupId>
+				<artifactId>hibernate-search-mapper-orm</artifactId>
+				<version>7.1.1.Final</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-backend-lucene -->
+		<dependency>
+				<groupId>org.hibernate.search</groupId>
+				<artifactId>hibernate-search-backend-lucene</artifactId>
+				<version>7.1.1.Final</version>
+		</dependency>
 
 
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
@@ -90,6 +115,30 @@
 				<version>2.3.230</version>
 				<scope>runtime</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+		<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-api</artifactId>
+				<version>5.11.0-M2</version>
+				<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
+		<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-junit-jupiter</artifactId>
+				<version>5.12.0</version>
+				<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+		<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>5.12.0</version>
+				<scope>test</scope>
+		</dependency>
+
+
+
 
 	</dependencies>
 
@@ -99,12 +148,66 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<!-- https://mvnrepository.com/artifact/org.sonarsource.scanner.maven/sonar-maven-plugin -->
+			<plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+            <version>4.0.0.4121</version>
+      </plugin>
+
+
+			<plugin>
+          <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.12</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/domain/*</exclude>
+                                <exclude>src/**/ProyectoForoApplication.java</exclude>
+																<exclude>**/config/*</exclude>
+																<exclude>**/exceptions/*</exclude>
+																<exclude>**/controller/dto/*</exclude>
+																 
+
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>jacoco-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>PACKAGE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>CLASS</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
 		</plugins>
 	</build>
 
-	<dependency>
-    <groupId>com.amazonaws.secretsmanager</groupId>
-    <artifactId>aws-secretsmanager-caching-java</artifactId>
-    <version>1.0.0</version>
-	</dependency>
 </project>

@@ -10,7 +10,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "answer")
 public class Answer {
@@ -26,25 +36,4 @@ public class Answer {
   @ManyToOne
   @JoinColumn(name = "id_post",referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_post_answer"), nullable = false)
   private Post post;
-
-  public Long getId() {
-    return id;
-  }
-
-  public Entry getEntry() {
-    return entry;
-  }
-
-  public Post getPost() {
-    return post;
-  }
-
-  public void setEntry(Entry entry) {
-    this.entry = entry;
-  }
-
-  public void setPost(Post post) {
-    this.post = post;
-  }
-
 }

@@ -1,4 +1,3 @@
-
 package com.app.domain.post;
 
 import com.app.domain.user.ForoUser;

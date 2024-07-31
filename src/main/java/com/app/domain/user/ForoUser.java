@@ -1,4 +1,3 @@
-
 package com.app.domain.user;
 
 import jakarta.persistence.Entity;
@@ -8,6 +7,8 @@ import jakarta.persistence.FetchType;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -40,6 +41,7 @@ public class ForoUser {
    @Column(unique = true)
    private String username;
 
+   @JsonIgnore
    private String password;
 
    @OneToOne
@@ -59,9 +61,8 @@ public class ForoUser {
   @Column(name = "credential_no_expired")
   private boolean credentialNoExpired;
 
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinTable(name = "user_roles",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "role_id"))
-  @Builder.Default
   private Set<Role> roles = new HashSet<>();
 
 }
